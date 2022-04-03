@@ -18,7 +18,7 @@ Our infrastructure is backed by the following Google Cloud services:
     - Cloud Run
 - [Cloud Storage](https://cloud.google.com/storage/docs)
     - [Storage Notifications](https://cloud.google.com/storage/docs/pubsub-notifications)
-- [Cloud Pub/Sub](https://cloud.google.com/pubsub/docs) 
+- [Cloud Pub/Sub](https://cloud.google.com/pubsub/docs)
 
 ![Cloud architecture diagram](./docs/demo_architecture.svg)
 
@@ -37,20 +37,20 @@ Further processing notifies consumers using the `processed` topic.
 
 Re-usable components, maintained in `/` (root) and `/packages`.
 
-| Package name                                              | Description                                                        |
-| --------------------------------------------------------- | ------------------------------------------------------------------ |
-| [serverless-storage-demo](package.json)                                | Root-level workspace containing development dependencies & scripts |
-| [ingest](packages/ingest/package.json) | Cloud Storage file ingest service                    |
-| [ingest-pdf](packages/ingest-pdf/package.json)     | Document to PDF converter                    |
-| [front-end](packages/front-end/package.json)   | User facing web service |
+| Package name                                   | Description                                                        |
+| ---------------------------------------------- | ------------------------------------------------------------------ |
+| [serverless-storage-demo](package.json)        | Root-level workspace containing development dependencies & scripts |
+| [ingest](packages/ingest/package.json)         | Cloud Storage file ingest service                                  |
+| [ingest-pdf](packages/ingest-pdf/package.json) | Document to PDF converter                                          |
+| [front-end](packages/front-end/package.json)   | User facing web service                                            |
 
 ## Setup
 
 Ensure tools are installed if required:
 
-| Language | Version | Tools                                                                                                                                                    |
-| -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Node.JS  | v14     | nvm: https://github.com/nvm-sh/nvm<br>Version is locked in [.nvmrc](/.
+| Language | Version | Tools                                                                         |
+| -------- | ------- | ----------------------------------------------------------------------------- |
+| Node.JS  | v14     | nvm: https://github.com/nvm-sh/nvm<br>Version is locked in [.nvmrc](./.nvmrc) |
 
 Ensure version of Node.JS is correct:
 
@@ -69,15 +69,61 @@ Install dependencies:
 
 ## Checks
 
-TBD
+Run lint checks on a package locally:
+
+    # Define package
+    export PACKAGE=ingest
+
+    cd packages/${PACKAGE} && pnpm lint
+
+
+Run unit tests on a package locally:
+
+    # Define package
+    export PACKAGE=ingest
+
+    cd packages/${PACKAGE} && pnpm test
 
 ## Usage
 
-TBD
+Running a package locally:
+
+    # Define package
+    export PACKAGE=ingest
+
+    cd packages/${PACKAGE} && pnpm start
+
+Building a Docker image:
+
+    export PREFIX=srvls-demo
+
+    # Define package and push location
+    export PACKAGE=ingest
+    export PROJECT=andrejus-web
+
+    docker buildx build . \
+        --file packages/${PACKAGE}/Dockerfile \
+        --tag eu.gcr.io/${PROJECT}/${PREFIX}-${PACKAGE}:latest \
+        --push
 
 ## Terraform Module
 
 ```hcl
-# TBD
+module "demo" {
+    source = "git::https://github.com/andrejusk/serverless-storage-demo.git//terraform/module?ref=master"
+
+    # Service definitions
+    project = "andrejus-web"
+    service = "serverless-demo"
+
+    # Service location definitions
+    gcs_location = "EU"
+    region       = "europe-west2"
+
+    # Service revision definitions
+    frontend_image  = "eu.gcr.io/andrejus-web/srvls-demo-frontend:latest"
+    ingest_image    = "eu.gcr.io/andrejus-web/srvls-demo-ingest:latest"
+    ingestpdf_image = "eu.gcr.io/andrejus-web/srvls-demo-ingestpdf:latest"
+}
 ```
 

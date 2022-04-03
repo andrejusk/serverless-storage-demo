@@ -6,6 +6,7 @@
     "main": "src/index.js",
     "scripts": {
         "start": "node src/index.js",
+        "lint": "TIMING=1 eslint \"src/**/*.js\"",
         "test": "NODE_ENV=test mocha \"src/**/*.test.js\" --recursive"
     },
     "author": "andrejusk",

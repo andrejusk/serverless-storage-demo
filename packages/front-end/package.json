@@ -7,6 +7,7 @@
     "dev": "remix build && run-p dev:*",
     "dev:node": "cross-env NODE_ENV=development nodemon ./build/index.js --watch ./build/index.js",
     "dev:remix": "remix watch",
+    "lint": "TIMING=1 eslint \"src/**/*.{js,jsx}\"",
     "start": "cross-env NODE_ENV=production node ./build/index.js"
   },
   "dependencies": {
