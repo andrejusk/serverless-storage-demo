@@ -1,0 +1,12 @@
+{
+  "name": "serverless-storage-demo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "author": "andrejusk",
+  "packageManager": "pnpm@6.32.4"
+}

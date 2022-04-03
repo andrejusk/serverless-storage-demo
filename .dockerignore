@@ -1,0 +1,28 @@
+.dockerignore
+Dockerfile
+
+.git
+.github
+.gitignore
+
+.idea
+.vscode
+.nvmrc
+.editorconfig
+
+.eslintrc
+.prettierignore
+.prettierrc
+.storybook
+README.md
+terraform
+typedoc.json
+
+# node ignores
+*-error.log
+node_modules
+
+# Localhost
+*.log
+tmp
+volumes

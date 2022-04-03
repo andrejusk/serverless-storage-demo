@@ -1,0 +1,48 @@
+name: Static checks
+
+# Trigger the workflow on every push
+on:
+  push:
+    branches:
+      - '*'
+      - '**'
+
+jobs:
+  checks-hadolint-front-end:
+    name: hadolint (packages/front-end/Dockerfile)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: Run hadolint
+        uses: hadolint/hadolint-action@v1.6.0
+        with:
+          dockerfile: packages/front-end/Dockerfile
+          failure-threshold: error
+
+  checks-hadolint-ingest:
+    name: hadolint (packages/ingest/Dockerfile)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: Run hadolint
+        uses: hadolint/hadolint-action@v1.6.0
+        with:
+          dockerfile: packages/ingest/Dockerfile
+          failure-threshold: error
+
+  checks-hadolint-ingest-pdf:
+    name: hadolint (packages/ingest-pdf/Dockerfile)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: Run hadolint
+        uses: hadolint/hadolint-action@v1.6.0
+        with:
+          dockerfile: packages/ingest-pdf/Dockerfile
+          failure-threshold: error

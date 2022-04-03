@@ -1,0 +1,25 @@
+{
+    "name": "ingest-pdf",
+    "private": true,
+    "version": "1.0.0",
+    "description": "Document to PDF conversion service",
+    "main": "src/index.js",
+    "author": "andrjeusk",
+    "scripts": {
+        "start": "node src/index.js",
+        "test": "NODE_ENV=test mocha \"src/**/*.test.js\" --recursive"
+    },
+    "dependencies": {
+        "@google-cloud/storage": "^5.18.3",
+        "body-parser": "^1.19.2",
+        "child_process": "^1.0.2",
+        "express": "^4.17.3",
+        "util": "^0.12.4"
+    },
+    "devDependencies": {
+        "chai": "^4.3.6",
+        "mocha": "^9.2.2",
+        "sinon": "^13.0.1",
+        "supertest": "^6.2.2"
+    }
+}

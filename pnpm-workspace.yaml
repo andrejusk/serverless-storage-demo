@@ -1,0 +1,4 @@
+# Make sure this is synced with package.json#workspaces.packages
+packages:
+  # all packages in subdirs of packages/
+  - 'packages/**'
