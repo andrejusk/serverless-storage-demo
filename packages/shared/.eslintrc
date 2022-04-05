@@ -4,6 +4,10 @@
   "parserOptions": {
     "ecmaVersion": 2020 // Allows for the parsing of modern ECMAScript features
   },
+  "env": {
+    "node": true,
+    "mocha": true
+  },
   "extends": [
     "eslint:recommended",
     "plugin:prettier/recommended",

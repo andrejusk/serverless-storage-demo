@@ -1,1 +1,14 @@
+build
+dist
+
+# package managers
 node_modules
+
+# IDEs
+.vscode
+.idea
+
+# Localhost
+*.log
+tmp
+volumes

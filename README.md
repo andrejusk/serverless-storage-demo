@@ -93,9 +93,11 @@ Running a package locally:
 
     cd packages/${PACKAGE} && pnpm start
 
-Building a Docker image:
+A helper script is available to spin up a local dev environment:
 
-    export PREFIX=srvls-demo
+    ./scripts/localdev.sh
+
+Building a Docker image:
 
     # Define package and push location
     export PACKAGE=ingest
@@ -103,8 +105,12 @@ Building a Docker image:
 
     docker buildx build . \
         --file packages/${PACKAGE}/Dockerfile \
-        --tag eu.gcr.io/${PROJECT}/${PREFIX}-${PACKAGE}:latest \
+        --tag eu.gcr.io/${PROJECT}/${PACKAGE}:latest \
         --push
+
+A helper script is available to build and push all images:
+
+    ./scripts/build-push-all.sh
 
 ## Terraform Module
 
