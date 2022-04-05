@@ -55,14 +55,18 @@ app.post("/", async (req, res, next) => {
       await uploadOutput(destination);
       await publishOutput({
         json: {
-          foo: "bar",
+          uid: 'abc123',
+          status: 'success',
+          bucket: process.env.OUTPUT_BUCKET,
+          file: name,
         },
       });
     } else {
       await storage.bucket(bucket).file(name).delete();
       await publishOutput({
         json: {
-          foo: "bar",
+          uid: 'abc123',
+          status: 'failure',
         },
       });
     }

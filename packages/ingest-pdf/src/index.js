@@ -58,13 +58,17 @@ app.post("/", async (req, res, next) => {
       await uploadOutput(`/tmp/${pdfFileName}`);
       await publishOutput({
         json: {
-          foo: "bar",
+          uid: 'abc123',
+          status: 'success',
+          bucket: process.env.OUTPUT_BUCKET,
+          file: pdfFileName,
         },
       });
     } else {
       await publishOutput({
         json: {
-          foo: "bar",
+          uid: 'abc123',
+          status: 'failure',
         },
       });
     }

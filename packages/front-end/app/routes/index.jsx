@@ -1,4 +1,4 @@
-import { useState, useTransition } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Badge,
   Button,
@@ -6,37 +6,30 @@ import {
   Container,
   Heading,
   HStack,
-  Image,
+  // Image,
   Input,
   Text,
 } from "@chakra-ui/react";
-import { json } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
 
-import { Storage } from "@google-cloud/storage";
-
-const bucket = storage.bucket(process.env.OUTPUT_BUCKET);
-
-export async function action({ request }) {
-  const upload = JSON.parse((await request.formData())._fields.upload);
-  if (!upload) json({ message: "Missing upload" }, 400);
-  console.log({ upload });
-  // TODO generate upload URLs
-  json({ upload }, 200);
-  return null;
-}
-
+/**
+ * Application index page
+ *
+ * Present file upload interface to the user,
+ * handle file ingest and display ingest status.
+ */
 export default function Index() {
-  const actionData = useActionData();
-  console.log({ actionData });
+  const fetcher = useFetcher();
+  const fileRef = useRef();
 
   // Maintain file state, calculate when input is changed
   const [uploadState, setUpload] = useState([]);
   const isSubmittable = uploadState.length > 0;
+  const allowSubmit = fetcher.state === "idle" && isSubmittable;
 
-  // TODO useEffect if returned action data needs to be uploaded
-
+  // Sync file picker with internal state
   const handleFileInput = async (e) => {
+    if (!allowSubmit) throw "Not in a submitable state";
     const { files } = e.target;
     const newFileState = [];
     for (const file of files) {
@@ -47,17 +40,41 @@ export default function Index() {
     return setUpload(newFileState);
   };
 
+  useEffect(() => {
+    // Clear file picker if out of sync
+    if (!isSubmittable) {
+      fileRef.current.value = null;
+    }
+    // TODO useEffect if returned action data needs to be uploaded
+  }, [isSubmittable]);
+
+  const handleSubmit = (e) => {
+    // FIXME is it submitting correctly?
+    fetcher.submit(e.target);
+  };
+  // FIXME never goes out of 'idle'
+  console.log({ fetcher });
+
   return (
     <Container my={21}>
       {/* Demo information */}
+      {/* <Image src="/path/to/demo/logo"/> */}
       <Heading>Serverless Storage Demo</Heading>
       <Text>Upload files, run checks and convert to PDF</Text>
 
       {/* New upload picker */}
-      <Box as={Form} method="post" p={5} border={"1px"} my={7}>
+      <Box
+        as={fetcher.Form}
+        method="post"
+        action="/upload"
+        p={5}
+        border={"1px"}
+        my={7}
+      >
         {/* Allow mutliple files to be selected */}
         <Text>Drag & drop file(s) here, or tap to select</Text>
         <Input
+          ref={fileRef}
           type="file"
           id="file-input"
           onChange={handleFileInput}
@@ -88,7 +105,12 @@ export default function Index() {
           name="upload"
           value={JSON.stringify(uploadState)}
         />
-        <Button type="submit" disabled={!isSubmittable} mt={2}>
+        <Button
+          type="submit"
+          disabled={!allowSubmit}
+          mt={2}
+          onSubmit={handleSubmit}
+        >
           Submit
         </Button>
       </Box>
