@@ -1,5 +1,5 @@
 // https://chakra-ui.com/guides/getting-started/remix-guide
-import { createContext } from "react";
+import React from "react";
 
 export interface ServerStyleContextData {
   key: string;
@@ -7,7 +7,7 @@ export interface ServerStyleContextData {
   css: string;
 }
 
-export const ServerStyleContext = createContext<
+export const ServerStyleContext = React.createContext<
   ServerStyleContextData[] | null
 >(null);
 
@@ -15,6 +15,5 @@ export interface ClientStyleContextData {
   reset: () => void;
 }
 
-export const ClientStyleContext = createContext<ClientStyleContextData | null>(
-  null
-);
+export const ClientStyleContext =
+  React.createContext<ClientStyleContextData | null>(null);

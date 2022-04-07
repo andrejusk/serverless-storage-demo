@@ -54,7 +54,7 @@ const Document = withEmotionCache(({ children }, emotionCache) => {
         ))}
       </head>
       <body>
-        {children}
+        <ChakraProvider>{children}</ChakraProvider>
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === "development" ? <LiveReload /> : null}
@@ -72,9 +72,7 @@ export const meta = () => ({
 export default function App() {
   return (
     <Document>
-      <ChakraProvider>
-        <Outlet />
-      </ChakraProvider>
+      <Outlet />
     </Document>
   );
 }

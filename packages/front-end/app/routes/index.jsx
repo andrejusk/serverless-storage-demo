@@ -34,20 +34,10 @@ const Upload = (props) => {
   const { file, dispatch } = props;
   const uploader = useFetcher();
   React.useEffect(() => {
-    const upload = JSON.stringify([{ ...file }]);
     if (file.status === "init" && uploader.type === "init") {
       dispatch({ ...file, status: "submitting" });
-      uploader.submit(
-        { upload },
-        {
-          method: "POST",
-          action: "/upload",
-        }
-      );
+      uploader.load(`/upload?${new URLSearchParams(file).toString()}`);
     }
-
-    // FIXME POST /upload triggers '/' reload, losing uploader.data
-    // TODO accept reload and store everything in a relational DB?
     console.log({ data: uploader.data });
   }, [file, uploader, dispatch]);
   return (
