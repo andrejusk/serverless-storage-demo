@@ -29,8 +29,8 @@ export default function handleRequest(
       <CacheProvider value={cache}>
         <RemixServer context={remixContext} url={request.url} />
       </CacheProvider>
-    </ServerStyleContext.Provider>,
-  )
+    </ServerStyleContext.Provider>
+  );
 
   responseHeaders.set("Content-Type", "text/html");
 

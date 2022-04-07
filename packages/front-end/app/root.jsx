@@ -12,6 +12,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import { ServerStyleContext, ClientStyleContext } from "./context";
 
+export const unstable_shouldReload = () => false;
+
 const Document = withEmotionCache(({ children }, emotionCache) => {
   const serverStyleData = useContext(ServerStyleContext);
   const clientStyleData = useContext(ClientStyleContext);
@@ -28,7 +30,7 @@ const Document = withEmotionCache(({ children }, emotionCache) => {
     });
     // reset cache to reapply global styles
     clientStyleData?.reset();
-  }, []);
+  }, [clientStyleData, emotionCache]);
 
   return (
     <html lang="en">

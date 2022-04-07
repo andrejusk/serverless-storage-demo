@@ -11,9 +11,9 @@
   "dependencies": {
     "@chakra-ui/react": "^1.8.7",
     "@emotion/cache": "^11.7.1",
-    "@emotion/react": "^11",
-    "@emotion/server": "^11",
-    "@emotion/styled": "^11",
+    "@emotion/react": "^11.8.2",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.8.1",
     "@google-cloud/pubsub": "^2.19.0",
     "@google-cloud/storage": "^5.18.3",
     "@remix-run/node": "^1.3.4",
@@ -21,19 +21,23 @@
     "@remix-run/serve": "^1.3.4",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
-    "express": "^4.17.1",
-    "framer-motion": "^6",
+    "express": "^4.17.3",
+    "framer-motion": "^6.2.8",
+    "hashids": "^2.2.10",
     "morgan": "^1.10.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-dropzone": "^12.0.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.8",
     "@babel/preset-react": "^7.16.7",
     "@remix-run/dev": "^1.3.4",
     "@remix-run/eslint-config": "^1.3.4",
     "eslint": "^8.11.0",
     "nodemon": "^2.0.15",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.6.3"
   },
   "engines": {
     "node": ">=14"

@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { CacheProvider } from '@emotion/react'
+import { useState } from "react";
+import { CacheProvider } from "@emotion/react";
 import { hydrate } from "react-dom";
 import { RemixBrowser } from "@remix-run/react";
 
-import { ClientStyleContext } from './context'
-import createEmotionCache from './createEmotionCache';
+import { ClientStyleContext } from "./context";
+import createEmotionCache from "./createEmotionCache";
 
 function ClientCacheProvider({ children }) {
   const [cache, setCache] = useState(createEmotionCache());
