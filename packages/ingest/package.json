@@ -1,7 +1,7 @@
 {
     "name": "ingest",
     "private": true,
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "Cloud Storage file ingestion service",
     "main": "src/index.js",
     "scripts": {

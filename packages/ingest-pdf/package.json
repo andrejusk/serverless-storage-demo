@@ -1,7 +1,7 @@
 {
     "name": "ingest-pdf",
     "private": true,
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "Document to PDF conversion service",
     "main": "src/index.js",
     "author": "andrjeusk",

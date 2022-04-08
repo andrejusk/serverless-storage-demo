@@ -1,8 +1,10 @@
 {
   "root": true,
-  "plugins": ["prettier", "security"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier", "security"],
   "parserOptions": {
-    "ecmaVersion": 2020 // Allows for the parsing of modern ECMAScript features
+    "ecmaVersion": 2020, // Allows for the parsing of modern ECMAScript features
+    "sourceType": "module" // Allows for the use of imports
   },
   "env": {
     "node": true,
@@ -10,6 +12,8 @@
   },
   "extends": [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:prettier/recommended",
     "plugin:security/recommended",
     "prettier"

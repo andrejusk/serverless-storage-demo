@@ -46,6 +46,8 @@ app.post("/", async (req, res, next) => {
   console.log(`Downloading to temporary location '${destination}'...`);
   await storage.bucket(bucket).file(name).download({ destination });
 
+  // TODO check file size
+
   // Attempt to check for viruses, either:
   //  - Succeed, upload to output bucket, notify success
   //  - Fail, delete from original bucket, notify failure
@@ -55,8 +57,8 @@ app.post("/", async (req, res, next) => {
       await uploadOutput(destination);
       await publishOutput({
         json: {
-          uid: 'abc123',
-          status: 'success',
+          uid: "abc123",
+          status: "success",
           bucket: process.env.OUTPUT_BUCKET,
           file: name,
         },
@@ -65,8 +67,8 @@ app.post("/", async (req, res, next) => {
       await storage.bucket(bucket).file(name).delete();
       await publishOutput({
         json: {
-          uid: 'abc123',
-          status: 'failure',
+          uid: "abc123",
+          status: "failure",
         },
       });
     }

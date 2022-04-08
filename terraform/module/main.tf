@@ -69,6 +69,14 @@ resource "google_storage_bucket" "upload" {
       type = "Delete"
     }
   }
+
+  cors {
+    origin = ["*"]
+    method = ["GET", "HEAD", "PUT"]
+    response_header = [
+      "Content-Type",
+    ]
+  }
 }
 resource "google_storage_bucket" "processed" {
   name          = "${var.service}-processed"
@@ -113,7 +121,7 @@ resource "google_storage_notification" "upload" {
 }
 
 # ----------------------------------------------------------------------------
-# Upload ingest topic and services
+# Upload ingest service and invoker service account
 # ----------------------------------------------------------------------------
 resource "google_cloud_run_service" "ingest" {
   name     = "${var.service}-ingest"
@@ -162,7 +170,35 @@ resource "google_cloud_run_service" "ingest" {
     ]
   }
 }
-resource "google_pubsub_subscription" "ingest-upload" {
+
+locals {
+  upload_invoker_sa = "${var.service}-upload-invoker"
+  upload_invoker_email = "${local.upload_invoker_sa}@${var.project}.iam.gserviceaccount.com"
+}
+resource "google_service_account" "upload_invoker_sa" {
+  account_id   = local.upload_invoker_sa
+  display_name = "Pub/Sub adapter Service Account"
+}
+data "google_iam_policy" "upload_invoker" {
+  binding {
+    role = "roles/run.invoker"
+    members = [
+      "serviceAccount:${local.upload_invoker_email}",
+    ]
+  }
+  depends_on = [
+    google_service_account.upload_invoker_sa
+  ]
+}
+resource "google_cloud_run_service_iam_policy" "upload_invoker" {
+  location = google_cloud_run_service.ingest.location
+  project  = google_cloud_run_service.ingest.project
+  service  = google_cloud_run_service.ingest.name
+
+  policy_data = data.google_iam_policy.upload_invoker.policy_data
+}
+
+resource "google_pubsub_subscription" "ingest_upload" {
   name  = "${var.service}-ingest-upload"
   topic = google_pubsub_topic.upload.name
 
@@ -174,8 +210,20 @@ resource "google_pubsub_subscription" "ingest-upload" {
     attributes = {
       x-goog-version = "v1"
     }
+    oidc_token {
+      service_account_email = local.upload_invoker_email
+    }
   }
+  depends_on = [
+    google_service_account.upload_invoker_sa
+  ]
 }
+resource "google_service_account_iam_member" "pubsub_assume_sa" {
+  service_account_id = google_service_account.upload_invoker_sa.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:service-${data.google_project.default.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+}
+
 
 # ----------------------------------------------------------------------------
 # Ingest services, e.g. PDF converter
