@@ -69,6 +69,8 @@ describe("File ingest service", () => {
       fs.writeFileSync(testPath, "sample text", "utf8");
       // eslint-disable-next-line security/detect-non-literal-fs-filename
       fs.writeFileSync(badPath, badData, "utf8");
+
+      // FIXME stub out NodeClam calls
     });
     afterEach(() => {
       // Clean up after tests

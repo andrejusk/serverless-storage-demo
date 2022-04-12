@@ -18,7 +18,9 @@
         "child_process": "^1.0.2",
         "clamscan": "^2.1.2",
         "express": "^4.17.3",
-        "util": "^0.12.4"
+        "morgan": "^1.10.0",
+        "util": "^0.12.4",
+        "winston": "^3.7.2"
     },
     "devDependencies": {
         "chai": "^4.3.6",

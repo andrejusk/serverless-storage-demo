@@ -5,12 +5,11 @@ RUN apt-get update -y \
     && npm i -g pnpm
 
 WORKDIR /usr/src/demo
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/front-end/package.json packages/front-end/
 RUN pnpm install
 COPY . .
 
 WORKDIR /usr/src/demo/packages/front-end
-RUN pnpm build
-RUN pnpm install --prod
+RUN pnpm build && pnpm install --prod
 CMD [ "pnpm", "start" ]

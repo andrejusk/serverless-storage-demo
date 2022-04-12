@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_OPTIONS='-r next-logger' next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -19,21 +19,21 @@
     "axios": "^0.26.1",
     "framer-motion": "^6.2.8",
     "hashids": "^2.2.10",
-    "next": "12.1.4",
     "next-logger": "^3.0.0",
-    "react": "^17.0.0",
+    "next": "12.1.4",
     "react-dom": "^17.0.0",
-    "react-dropzone": "^12.0.4"
+    "react-dropzone": "^12.0.4",
+    "react": "^17.0.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.8",
     "@types/node": "17.0.23",
     "@types/react": "^17.0.0",
-    "@types/react-dom": "18.0.0",
+    "@types/react-dom": "17.0.0",
     "@types/uuid": "^8.3.4",
     "eslint": "8.12.0",
     "eslint-config-next": "12.1.4",
-    "typescript": "4.6.3",
-    "uuid": "^8.3.2"
+    "typescript": "4.6.3"
   }
 }

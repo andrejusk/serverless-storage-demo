@@ -2,22 +2,40 @@
 
 # Echo script name and environment versions
 me=$(basename $0)
-echo -e  "\n=== Running '$me'...\n"
+echo -e "\n=== Running '$me'...\n"
 if (($# > 0)); then
     echo -e "$@\n\n"
 fi
 echo "Node $(node --version)"
 echo "pnpm $(pnpm --version)"
 
-exit 1
-
 trap "exit" INT TERM ERR
 trap "killall background" EXIT
 
-# TODO subscribe ingest topic, set test bucket env path
-node packages/ingest-pdf/src/index.js
+# Set up environment variables
+processBucket="srvls-demo-process"
+uploadBucket="srvls-demo-upload"
+uploadTopic="srvls-demo-upload"
+ingestTopic="srvls-demo-ingest"
+processTopic="srvls-demo-process"
 
-node packages/ingest/src/index.js
+# cd packages/ingest && \
+#     OUTPUT_TOPIC=$ingestTopic \
+#     OUTPUT_PREFIX="/local-ingest" \
+#     OUTPUT_BUCKET=$processBucket \
+#     node src/index.js &
+# cd packages/ingest-pdf && \
+#     OUTPUT_TOPIC=$processTopic \
+#     OUTPUT_PREFIX="/local-pdf" \
+#     OUTPUT_BUCKET=$processBucket \
+#     node src/index.js &
 
-# TODO watch remix build, run express server
-node packages/front-end/src/index.js
+cd packages/front-end && \
+    OUTPUT_BUCKET=$uploadBucket \
+    PROCESS_BUCKET=$processBucket \
+    UPLOAD_TOPIC=$uploadTopic \
+    INGEST_TOPIC=$ingestTopic \
+    PROCESS_TOPIC=$processTopic \
+    pnpm dev &
+
+wait

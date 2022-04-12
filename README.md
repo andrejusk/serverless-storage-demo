@@ -27,9 +27,9 @@ to the user. New files are ingested into the `upload`
 Cloud Bucket, which notifies the `ingest` service through
 the `upload` Pub/Sub topic.
 
-Successful uploads are saved to the `processed` Cloud Bucket,
+Successful uploads are saved to the `process` Cloud Bucket,
 and can kick off additional workloads through the `ingest` topic.
-Further processing notifies consumers using the `processed` topic.
+Further processing notifies consumers using the `process` topic.
 
 # Source
 
