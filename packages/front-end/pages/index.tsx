@@ -440,7 +440,11 @@ const Upload: React.FC<UploadProps> = (props) => {
               Path: {fileProps["ingest-pdf"].path}
             </Text>
             {fileProps["ingest-pdf"].url && (
-              <a href={fileProps["ingest-pdf"].url}>
+              <a
+                href={fileProps["ingest-pdf"].url}
+                target="_blank"
+                rel="noreferrer"
+              >
                 <Button colorScheme={"green"} mt={3} size="sm">
                   Download PDF
                 </Button>
