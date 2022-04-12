@@ -9,7 +9,7 @@ resource "google_cloud_run_service" "ingest-pdf" {
         resources {
           limits = {
             "cpu"    = "1000m"
-            "memory" = "1024Mi"
+            "memory" = "1Gi"
           }
         }
         ports {

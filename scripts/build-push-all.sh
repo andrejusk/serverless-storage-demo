@@ -30,3 +30,12 @@ do
         --tag ${GCR_REGION}/${GCP_PROJECT}/${PREFIX}-${pkg}:latest \
         --push
 done
+
+# Apply latest images to Cloud Run services
+for pkg in "${pkgs[@]}"
+do
+    echo "Deploying '${pkg}'..."
+    gcloud run services update ${PREFIX}-${pkg} \
+        --region=europe-west2 \
+        --image=${GCR_REGION}/${GCP_PROJECT}/${PREFIX}-${pkg}:latest
+done

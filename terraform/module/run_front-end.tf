@@ -38,6 +38,11 @@ resource "google_pubsub_topic_iam_member" "frontend_subscriber" {
   role     = "roles/pubsub.subscriber"
   member   = "serviceAccount:${local.frontend_email}"
 }
+resource "google_project_iam_member" "frontend_pubsub_admin" {
+  project = var.project
+  role    = "roles/pubsub.admin"
+  member  = "serviceAccount:${local.frontend_email}"
+}
 
 resource "google_pubsub_subscription" "frontend_subscription" {
   for_each = local.frontend_topics
@@ -48,7 +53,7 @@ resource "google_pubsub_subscription" "frontend_subscription" {
   message_retention_duration = "1200s"
   retain_acked_messages      = true
 
-  ack_deadline_seconds = 20
+  ack_deadline_seconds = 10
 
   expiration_policy {
     ttl = "300000.5s"
@@ -57,7 +62,7 @@ resource "google_pubsub_subscription" "frontend_subscription" {
 }
 
 resource "google_cloud_run_service" "front-end" {
-  name     = "${var.service}-frontend"
+  name     = "${var.service}-front-end"
   location = var.region
 
   template {
@@ -67,7 +72,7 @@ resource "google_cloud_run_service" "front-end" {
         resources {
           limits = {
             "cpu"    = "1000m"
-            "memory" = "1024Mi"
+            "memory" = "1Gi"
           }
         }
         ports {
