@@ -54,8 +54,12 @@ export enum ProcessStatus {
 
 export type BucketFile = {
   status: ProcessStatus;
-  bucket?: string; /// Storage bucket name
-  path?: string; /// Bucket path
+
+  bucket?: string; /// Storage bucket file is saved in
+  path?: string; /// Path to file
+  gsUrl?: string; /// Google Storage URL
+  consoleUrl?: string; /// Cloud Console URL
+
   url?: string; /// Short-lived access URL
   reason?: string; /// Failure reason
 };
@@ -66,46 +70,42 @@ export type UuidLike = {
   uuid: string; /// Unique identifier
 };
 
-export type FileUpload = UuidLike & {
-  _file: File; /// Original file reference
+export type FileUpload = UuidLike &
+  Omit<BucketFile, "status"> & {
+    _file: File; /// Original file reference
 
-  name: string; /// Original filename
-  size: number; /// Bytes
-  lastModified: number; /// Unix seconds
-  type: string; /// IANA media type
+    name: string; /// Original filename
+    size: number; /// Bytes
+    lastModified: number; /// Unix seconds
+    type: string; /// IANA media type
 
-  bucket?: string; /// Storage bucket file is saved in
-  path?: string; /// Path to file
-  gsUrl?: string; /// Google Storage URL
-  consoleUrl?: string; /// Cloud Console URL
+    status: UploadStatus; /// Upload status
 
-  status: UploadStatus; /// Upload status
+    // If upload is Ready
+    //             ------
 
-  // If upload is Ready
-  //             ------
+    /// Upload URL
+    url?: string;
 
-  /// Upload URL
-  url?: string;
+    // If upload is InProgress
+    //             -----------
 
-  // If upload is InProgress
-  //             -----------
+    /// Upload progress
+    progress?: number;
 
-  /// Upload progress
-  progress?: number;
+    // If upload is Rejected
+    //             ----------
 
-  // If upload is Rejected
-  //             ----------
+    /// Reason why file was rejected
+    reason?: string;
 
-  /// Reason why file was rejected
-  reason?: string;
+    // If upload is Done
+    //             ------
 
-  // If upload is Done
-  //             ------
-
-  // Integrations
-  ingest?: BucketFile;
-  "ingest-pdf"?: BucketFile;
-};
+    // Integrations
+    ingest?: BucketFile;
+    "ingest-pdf"?: BucketFile;
+  };
 
 export type FileCallback = { (e: FileUpload): void };
 export type FileDict = Record<string, File>;
@@ -405,7 +405,7 @@ const Upload: React.FC<UploadProps> = (props) => {
           <Text textColor={"GrayText"}>Path: {fileProps.path}</Text>
         )}
         {fileProps.gsUrl && fileProps.consoleUrl && (
-          <a href={fileProps.consoleUrl}>
+          <a href={fileProps.consoleUrl} target="_blank" rel="noreferrer">
             <Text>{fileProps.gsUrl}</Text>
           </a>
         )}
@@ -423,6 +423,13 @@ const Upload: React.FC<UploadProps> = (props) => {
               Bucket: {fileProps.ingest.bucket}
             </Text>
             <Text textColor={"GrayText"}>Path: {fileProps.ingest.path}</Text>
+            <a
+              href={fileProps.ingest.consoleUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Text>{fileProps.ingest.gsUrl}</Text>
+            </a>
           </>
         ) : (
           <Text textColor={"GrayText"}>No file ingest data yet</Text>

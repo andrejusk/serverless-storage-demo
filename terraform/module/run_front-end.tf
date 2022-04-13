@@ -104,7 +104,7 @@ resource "google_cloud_run_service" "front-end" {
           value = var.service
         }
       }
-      timeout_seconds      = 30
+      timeout_seconds      = 900
       service_account_name = local.frontend_email
     }
   }

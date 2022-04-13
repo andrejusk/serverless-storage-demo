@@ -65,6 +65,7 @@ const topicMap = [
 const subscriptions = topicMap.map(({ key, topic }) =>
   topic.subscription(`${PREFIX}-frontend-${key}`)
 );
+subscriptions.forEach((sub) => sub.get());
 
 /// T or object with message string
 type ErrorResponse<T> =
@@ -149,6 +150,7 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(404).json({ message: "Not Found" });
 
   // Write SSE header
+  console.log("Writing SSE header");
   res.writeHead(200, {
     Connection: "keep-alive",
     "Content-Encoding": "none",
@@ -161,13 +163,18 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const callback: { (...args: any[]): void } = async (message) => {
     // Parse object
     const obj = JSON.parse(message.data.toString());
-    const { status, path, kind } = obj;
+    const { status, path, kind, bucket } = obj;
     if (path !== targetPath) return;
     console.log(`Forwarding "${kind}" "${status}" message`);
 
     // Add extra fields
+    const gsUrl = `gs://${bucket}/${path}`;
+    const consoleUrl =
+      "https://console.cloud.google.com/storage/browser/_details/" +
+      `${bucket}/${encodeURIComponent(path)}`;
+
     // const meta = await storage.bucket(bucket).file(path).getMetadata();
-    const resObj = { ...obj };
+    const resObj = { ...obj, gsUrl, consoleUrl };
     if (kind === "ingest-pdf" && status === ProcessStatus.Success) {
       const url = await storage
         .bucket(obj.pdfBucket)
