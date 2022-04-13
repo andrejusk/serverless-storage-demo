@@ -2,6 +2,7 @@ build
 dist
 
 # package managers
+.pnpm-debug.log
 node_modules
 
 # IDEs
