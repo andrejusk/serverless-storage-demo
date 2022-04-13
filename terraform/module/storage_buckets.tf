@@ -15,9 +15,9 @@ resource "google_storage_bucket" "upload" {
 
   cors {
     origin = ["*"]
-    method = ["GET", "HEAD", "PUT"]
+    method = ["*"]
     response_header = [
-      "Content-Type",
+      "Content-Type", "Origin", "X-Requested-With", "Accept"
     ]
   }
 }

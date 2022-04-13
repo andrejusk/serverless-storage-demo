@@ -195,7 +195,9 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const end = async () => {
     console.log("Cleaning up after request...");
-    await Promise.all(subscriptions.map((sub) => sub.delete));
+    subscriptions.forEach((sub) => {
+      sub.removeListener("message", callback);
+    });
     return;
   };
   req.on("aborted", end);
