@@ -114,7 +114,11 @@ A helper script is available to build and push all images:
 
 ## Terraform Module
 
-Instances of this repository can be spun up using:
+Instances of this repository can be spun up using sample below.
+
+Example when used in e.g.
+a [terraspace](https://terraspace.cloud/) stack:
+[screencast](https://asciinema.org/a/yKvb0eudE6w66c7tK8riZuLOR)
 
 ```hcl
 module "demo" {
@@ -134,7 +138,3 @@ module "demo" {
     ingestpdf_image = "eu.gcr.io/andrejus-web/srvls-demo-ingestpdf:latest"
 }
 ```
-
-When used in a [terraspace](https://terraspace.cloud/) stack: 
-
-[![asciicast](https://asciinema.org/a/4FEuaNUus0QxSKQbnaziV0R1d.svg)](https://asciinema.org/a/4FEuaNUus0QxSKQbnaziV0R1d)
