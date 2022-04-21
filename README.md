@@ -114,6 +114,8 @@ A helper script is available to build and push all images:
 
 ## Terraform Module
 
+Instances of this repository can be spun up using:
+
 ```hcl
 module "demo" {
     source = "git::https://github.com/andrejusk/serverless-storage-demo.git//terraform/module?ref=master"
@@ -133,3 +135,6 @@ module "demo" {
 }
 ```
 
+When used in a [terraspace](https://terraspace.cloud/) stack: 
+
+[![asciicast](https://asciinema.org/a/4FEuaNUus0QxSKQbnaziV0R1d.svg)](https://asciinema.org/a/4FEuaNUus0QxSKQbnaziV0R1d)
